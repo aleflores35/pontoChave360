@@ -31,12 +31,15 @@ import DeliveryComparison from './components/delivery/DeliveryComparison';
 import DeliveryFAQ from './components/delivery/DeliveryFAQ';
 import DeliveryCTA from './components/delivery/DeliveryCTA';
 
+// Legal Pages
+import LegalPage from './components/LegalPage';
+
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
 
   // Handle body background color changes based on theme
   useEffect(() => {
-    if (currentPage === 'home' || currentPage === 'delivery-agent') {
+    if (currentPage === 'home' || currentPage === 'delivery-agent' || currentPage === 'privacy' || currentPage === 'terms') {
       document.body.classList.add('bg-slate-950');
       document.body.classList.remove('bg-stone-50');
       // For delivery specific overrides if needed
@@ -53,9 +56,12 @@ export default function App() {
   }, [currentPage]);
 
   return (
-    <div className={`min-h-screen flex flex-col w-full overflow-x-hidden transition-colors duration-500 ${currentPage !== 'ai-agent' ? 'bg-slate-950 text-slate-50' : 'bg-stone-50 text-stone-900'}`}>
+    <div className={`min-h-screen flex flex-col w-full overflow-x-hidden transition-colors duration-500 ${currentPage === 'ai-agent' ? 'bg-stone-50 text-stone-900' : 'bg-slate-950 text-slate-50'}`}>
       
-      <DevNavigation currentPage={currentPage} setPage={setCurrentPage} />
+      {/* DevNav only shows on main landing pages to avoid clutter on legal pages */}
+      {['home', 'ai-agent', 'delivery-agent'].includes(currentPage) && (
+          <DevNavigation currentPage={currentPage} setPage={setCurrentPage} />
+      )}
 
       {/* --- HOME PAGE VIEW (Institutional) --- */}
       {currentPage === 'home' && (
@@ -109,7 +115,12 @@ export default function App() {
         </>
       )}
 
-      <Footer />
+      {/* --- LEGAL PAGES --- */}
+      {currentPage === 'privacy' && <LegalPage type="privacy" setPage={setCurrentPage} />}
+      {currentPage === 'terms' && <LegalPage type="terms" setPage={setCurrentPage} />}
+
+      {/* Footer is shown on all pages, passing setPage to handle navigation */}
+      <Footer setPage={setCurrentPage} />
     </div>
   );
 }

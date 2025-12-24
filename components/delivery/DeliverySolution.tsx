@@ -50,7 +50,7 @@ const DeliverySolution: React.FC = () => {
                                 </div>
                                 <div className="flex-1">
                                     <div className="flex justify-between items-center mb-1">
-                                        <p className="text-white font-bold text-sm">Mesa 04 (WhatsApp)</p>
+                                        <p className="text-white font-bold text-sm">Ana Souza (WhatsApp)</p>
                                         <span className="text-[10px] bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded uppercase font-bold">Em atendimento</span>
                                     </div>
                                     <p className="text-gray-400 text-xs">Oferecendo borda recheada...</p>
