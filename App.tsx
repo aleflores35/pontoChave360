@@ -1,9 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
-// Layout
 import DevNavigation from './components/DevNavigation';
 import Footer from './components/Footer';
 
-// Home Page Components (Institutional - Dark Theme)
+// Home Page Components
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProblemSection from './components/ProblemSection';
@@ -12,16 +12,17 @@ import Segments from './components/Segments';
 import Solutions from './components/Solutions';
 import Contact from './components/Contact';
 
-// AI Landing Page Components (Light Theme)
-import NavbarAI from './components/NavbarAI';
+// Generic AI Agent Landing Page
 import HeroAI from './components/HeroAI';
 import SdrExplanation from './components/SdrExplanation';
-import Benefits from './components/Benefits';
 import HowItWorks from './components/HowItWorks';
-import Testimonials from './components/Testimonials';
+import Benefits from './components/Benefits';
 import FAQ from './components/FAQ';
 
-// Delivery Agent Page Components (Dark/Orange Theme)
+// Niche Specific Components
+import HeroAIEstetica from './components/niche/HeroAIEstetica';
+
+// Delivery Page Components
 import DeliveryNavbar from './components/delivery/DeliveryNavbar';
 import DeliveryHero from './components/delivery/DeliveryHero';
 import DeliveryPain from './components/delivery/DeliveryPain';
@@ -31,41 +32,33 @@ import DeliveryComparison from './components/delivery/DeliveryComparison';
 import DeliveryFAQ from './components/delivery/DeliveryFAQ';
 import DeliveryCTA from './components/delivery/DeliveryCTA';
 
-// Legal Pages
 import LegalPage from './components/LegalPage';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
 
-  // Handle body background color changes based on theme
   useEffect(() => {
-    if (currentPage === 'home' || currentPage === 'delivery-agent' || currentPage === 'privacy' || currentPage === 'terms') {
-      document.body.classList.add('bg-slate-950');
-      document.body.classList.remove('bg-stone-50');
-      // For delivery specific overrides if needed
-      if (currentPage === 'delivery-agent') {
-         document.body.style.backgroundColor = '#050505'; // Ultra Dark
-      } else {
-         document.body.style.backgroundColor = '';
-      }
-    } else {
-      document.body.classList.remove('bg-slate-950');
-      document.body.style.backgroundColor = '';
-      document.body.classList.add('bg-stone-50');
-    }
+    // Scroll to top on page change
+    window.scrollTo(0, 0);
+    
+    // Manage background colors
+    const colors: Record<string, string> = {
+      'home': '#020617',
+      'ai-generic': '#050505',
+      'ai-estetica': '#050505',
+      'delivery-agent': '#050505'
+    };
+    document.body.style.backgroundColor = colors[currentPage] || '#020617';
   }, [currentPage]);
 
   return (
-    <div className={`min-h-screen flex flex-col w-full overflow-x-hidden transition-colors duration-500 ${currentPage === 'ai-agent' ? 'bg-stone-50 text-stone-900' : 'bg-slate-950 text-slate-50'}`}>
+    <div className="min-h-screen flex flex-col w-full overflow-x-hidden transition-colors duration-500 bg-[#020617] text-slate-50 selection:bg-cyan-500/30">
       
-      {/* DevNav only shows on main landing pages to avoid clutter on legal pages */}
-      {['home', 'ai-agent', 'delivery-agent'].includes(currentPage) && (
-          <DevNavigation currentPage={currentPage} setPage={setCurrentPage} />
-      )}
+      {/* DevNavigation is global and stays on top of everything */}
+      <DevNavigation currentPage={currentPage} setPage={setCurrentPage} />
 
-      {/* --- HOME PAGE VIEW (Institutional) --- */}
       {currentPage === 'home' && (
-        <>
+        <div className="animate-fadeIn">
           <Navbar />
           <main>
             <Hero />
@@ -75,33 +68,40 @@ export default function App() {
             <Solutions />
             <Contact />
           </main>
-        </>
+        </div>
       )}
 
-      {/* --- AI AGENT LANDING PAGE VIEW --- */}
-      {currentPage === 'ai-agent' && (
-        <>
-          <NavbarAI />
-          <main>
+      {currentPage === 'ai-generic' && (
+        <div className="animate-fadeIn">
+          <main className="bg-[#050505]">
             <HeroAI />
             <SdrExplanation />
             <HowItWorks />
             <Benefits />
-            <Testimonials />
             <FAQ />
             <Contact />
           </main>
-        </>
+        </div>
       )}
 
-      {/* --- DELIVERY AGENT LANDING PAGE VIEW --- */}
+      {currentPage === 'ai-estetica' && (
+        <div className="animate-fadeIn">
+          <main className="bg-[#050505]">
+            <HeroAIEstetica />
+            <SdrExplanation />
+            <HowItWorks />
+            <Benefits />
+            <FAQ />
+            <Contact />
+          </main>
+        </div>
+      )}
+
       {currentPage === 'delivery-agent' && (
-        <>
+        <div className="animate-fadeIn">
           <DeliveryNavbar setPage={setCurrentPage} />
           <main className="bg-[#050505] text-gray-100 font-sans relative">
-             {/* Global Noise Overlay for Delivery Page */}
              <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay fixed"></div>
-             
              <div className="relative z-10">
                <DeliveryHero />
                <DeliveryPain />
@@ -112,14 +112,12 @@ export default function App() {
                <DeliveryFAQ />
              </div>
           </main>
-        </>
+        </div>
       )}
 
-      {/* --- LEGAL PAGES --- */}
       {currentPage === 'privacy' && <LegalPage type="privacy" setPage={setCurrentPage} />}
       {currentPage === 'terms' && <LegalPage type="terms" setPage={setCurrentPage} />}
 
-      {/* Footer is shown on all pages, passing setPage to handle navigation */}
       <Footer setPage={setCurrentPage} />
     </div>
   );

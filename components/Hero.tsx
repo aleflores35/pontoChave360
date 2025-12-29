@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { ArrowRight, ChevronDown, Network, Database, Cpu } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 
 const Hero: React.FC = () => {
   const scrollToContact = () => {
@@ -8,72 +9,43 @@ const Hero: React.FC = () => {
 
   return (
     <section id="hero" className="relative pt-32 pb-24 lg:pt-48 lg:pb-40 overflow-hidden bg-slate-950">
-      {/* Tech Background Grid */}
-      <div className="absolute inset-0 bg-grid-tech opacity-20 pointer-events-none" />
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:40px_40px]" />
+      </div>
       
-      {/* Cybernetic Accents */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-          
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 border border-slate-700 mb-8 animate-fade-in-up">
-            <div className="flex gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse delay-75"></span>
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse delay-150"></span>
-            </div>
-            <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">Sistemas de Crescimento</span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 border border-slate-800 mb-8">
+            <Zap className="w-3 h-3 text-cyan-400 fill-cyan-400" />
+            <span className="text-[10px] font-bold text-slate-300 uppercase tracking-[0.2em]">Engenharia Comercial 360º</span>
           </div>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] mb-8 font-montserrat">
-            Negócios locais não precisam de "mais marketing". <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
-              Precisam de um Sistema de Aquisição Previsível.
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white tracking-tighter leading-[0.95] mb-8 font-montserrat">
+            NÃO VENDEMOS ANÚNCIOS.<br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
+              INSTALAMOS UM ATIVO DE VENDAS.
             </span>
           </h1>
           
-          <p className="text-lg md:text-xl text-slate-400 mb-12 leading-relaxed max-w-2xl font-light">
-            A <strong>PontoChave360</strong> estrutura o ecossistema que faz sua empresa ser encontrada no Google, converter leads em páginas otimizadas e atender clientes automaticamente com IA.
+          <p className="text-lg md:text-xl text-slate-400 mb-12 leading-relaxed max-w-3xl mx-auto font-light">
+            A PontoChave360 constrói o seu <strong>Funil de Vendas 360º</strong>: uma engrenagem de duas fases que planeja a inteligência e executa a engenharia para o seu negócio local escalar.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <button 
               onClick={scrollToContact}
-              className="px-8 py-5 bg-white text-slate-950 rounded font-bold text-lg hover:bg-slate-200 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] flex items-center justify-center gap-3"
+              className="group px-10 py-6 bg-white text-slate-950 rounded-2xl font-bold text-xl hover:scale-105 transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.2)] flex items-center gap-3"
             >
-              AGENDAR DIAGNÓSTICO
-              <ArrowRight className="w-5 h-5" />
+              SOLICITAR DIAGNÓSTICO
+              <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
             </button>
             
-            <button 
-               onClick={() => document.getElementById('problem')?.scrollIntoView({behavior: 'smooth'})}
-               className="px-8 py-5 bg-transparent border border-slate-700 text-white rounded font-bold text-lg hover:bg-slate-900 hover:border-slate-500 transition-all duration-300 flex items-center justify-center gap-2"
-            >
-              Ver a Diferença
-              <ChevronDown className="w-5 h-5 text-slate-400" />
-            </button>
-          </div>
-
-        </div>
-        
-        {/* Abstract Ecosystem Visual */}
-        <div className="mt-24 relative hidden md:flex justify-center">
-            <div className="relative w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent">
-                <div className="absolute -top-3 left-1/4 w-6 h-6 bg-slate-950 border-2 border-cyan-500 rounded-full flex items-center justify-center z-10">
-                    <Network size={12} className="text-cyan-400" />
-                </div>
-                <div className="absolute -top-3 left-1/2 w-6 h-6 bg-slate-950 border-2 border-blue-500 rounded-full flex items-center justify-center z-10">
-                    <Database size={12} className="text-blue-400" />
-                </div>
-                <div className="absolute -top-3 left-3/4 w-6 h-6 bg-slate-950 border-2 border-purple-500 rounded-full flex items-center justify-center z-10">
-                    <Cpu size={12} className="text-purple-400" />
-                </div>
+            <div className="flex items-center gap-3 text-slate-500 text-sm font-medium border-l border-slate-800 pl-6 h-12">
+                <ShieldCheck className="text-cyan-500 w-5 h-5" />
+                Sistemas Validados para Escala Local
             </div>
-            <div className="absolute top-0 w-full h-32 bg-gradient-to-b from-cyan-500/5 to-transparent blur-3xl"></div>
-        </div>
-
+          </div>
       </div>
     </section>
   );
