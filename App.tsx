@@ -34,19 +34,40 @@ import DeliveryCTA from './components/delivery/DeliveryCTA';
 // Legal Pages
 import LegalPage from './components/LegalPage';
 
+// Success Page
+import Obrigado from './components/Obrigado';
+
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
 
+  // Handle URL path on mount
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path === '/obrigado') {
+      setCurrentPage('obrigado');
+    }
+  }, []);
+
+  // Update URL when page changes (optional, but good for navigation)
+  useEffect(() => {
+    if (currentPage === 'obrigado') {
+      window.history.pushState({}, '', '/obrigado');
+    } else if (currentPage === 'home') {
+      window.history.pushState({}, '', '/');
+    }
+    // Add others if needed
+  }, [currentPage]);
+
   // Handle body background color changes based on theme
   useEffect(() => {
-    if (currentPage === 'home' || currentPage === 'delivery-agent' || currentPage === 'privacy' || currentPage === 'terms') {
+    if (currentPage === 'home' || currentPage === 'delivery-agent' || currentPage === 'privacy' || currentPage === 'terms' || currentPage === 'obrigado') {
       document.body.classList.add('bg-slate-950');
       document.body.classList.remove('bg-stone-50');
       // For delivery specific overrides if needed
       if (currentPage === 'delivery-agent') {
-         document.body.style.backgroundColor = '#050505'; // Ultra Dark
+        document.body.style.backgroundColor = '#050505'; // Ultra Dark
       } else {
-         document.body.style.backgroundColor = '';
+        document.body.style.backgroundColor = '';
       }
     } else {
       document.body.classList.remove('bg-slate-950');
@@ -57,10 +78,10 @@ export default function App() {
 
   return (
     <div className={`min-h-screen flex flex-col w-full overflow-x-hidden transition-colors duration-500 ${currentPage === 'ai-agent' ? 'bg-stone-50 text-stone-900' : 'bg-slate-950 text-slate-50'}`}>
-      
-      {/* DevNav only shows on main landing pages to avoid clutter on legal pages */}
+
+      {/* DevNav only shows on main landing pages to avoid clutter on legal/success pages */}
       {['home', 'ai-agent', 'delivery-agent'].includes(currentPage) && (
-          <DevNavigation currentPage={currentPage} setPage={setCurrentPage} />
+        <DevNavigation currentPage={currentPage} setPage={setCurrentPage} />
       )}
 
       {/* --- HOME PAGE VIEW (Institutional) --- */}
@@ -99,18 +120,18 @@ export default function App() {
         <>
           <DeliveryNavbar setPage={setCurrentPage} />
           <main className="bg-[#050505] text-gray-100 font-sans relative">
-             {/* Global Noise Overlay for Delivery Page */}
-             <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay fixed"></div>
-             
-             <div className="relative z-10">
-               <DeliveryHero />
-               <DeliveryPain />
-               <DeliverySolution />
-               <DeliveryFeatures />
-               <DeliveryComparison />
-               <DeliveryCTA />
-               <DeliveryFAQ />
-             </div>
+            {/* Global Noise Overlay for Delivery Page */}
+            <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay fixed"></div>
+
+            <div className="relative z-10">
+              <DeliveryHero />
+              <DeliveryPain />
+              <DeliverySolution />
+              <DeliveryFeatures />
+              <DeliveryComparison />
+              <DeliveryCTA />
+              <DeliveryFAQ />
+            </div>
           </main>
         </>
       )}
@@ -119,8 +140,11 @@ export default function App() {
       {currentPage === 'privacy' && <LegalPage type="privacy" setPage={setCurrentPage} />}
       {currentPage === 'terms' && <LegalPage type="terms" setPage={setCurrentPage} />}
 
-      {/* Footer is shown on all pages, passing setPage to handle navigation */}
-      <Footer setPage={setCurrentPage} />
+      {/* --- SUCCESS PAGE --- */}
+      {currentPage === 'obrigado' && <Obrigado setPage={setCurrentPage} />}
+
+      {/* Footer is shown on all pages EXCEPT 'obrigado' for focus, passing setPage to handle navigation */}
+      {currentPage !== 'obrigado' && <Footer setPage={setCurrentPage} />}
     </div>
   );
 }
