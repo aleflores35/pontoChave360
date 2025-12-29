@@ -12,7 +12,7 @@ import Segments from './components/Segments';
 import Solutions from './components/Solutions';
 import Contact from './components/Contact';
 
-// Generic AI Agent Landing Page
+// Generic AI Agent Landing Page (High Conversion SDR)
 import HeroAI from './components/HeroAI';
 import SdrExplanation from './components/SdrExplanation';
 import HowItWorks from './components/HowItWorks';
@@ -35,13 +35,45 @@ import DeliveryCTA from './components/delivery/DeliveryCTA';
 import LegalPage from './components/LegalPage';
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState('home');
+  // Hash-based routing logic
+  const getPageFromHash = () => {
+    const hash = window.location.hash.replace('#', '');
+    const routes: Record<string, string> = {
+      '': 'home',
+      'agentes-ia': 'ai-generic',
+      'estetica': 'ai-estetica',
+      'delivery': 'delivery-agent',
+      'privacidade': 'privacy',
+      'termos': 'terms'
+    };
+    return routes[hash] || 'home';
+  };
+
+  const [currentPage, setCurrentPage] = useState(getPageFromHash());
+
+  const setPage = (page: string) => {
+    const hashes: Record<string, string> = {
+      'home': '',
+      'ai-generic': 'agentes-ia',
+      'ai-estetica': 'estetica',
+      'delivery-agent': 'delivery',
+      'privacy': 'privacidade',
+      'terms': 'termos'
+    };
+    window.location.hash = hashes[page] || '';
+    setCurrentPage(page);
+  };
 
   useEffect(() => {
-    // Scroll to top on page change
+    const handleHashChange = () => {
+      setCurrentPage(getPageFromHash());
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
-    
-    // Manage background colors
     const colors: Record<string, string> = {
       'home': '#020617',
       'ai-generic': '#050505',
@@ -52,10 +84,9 @@ export default function App() {
   }, [currentPage]);
 
   return (
-    <div className="min-h-screen flex flex-col w-full overflow-x-hidden transition-colors duration-500 bg-[#020617] text-slate-50 selection:bg-cyan-500/30">
+    <div className="min-h-screen flex flex-col w-full overflow-x-hidden transition-colors duration-500 bg-[#020617] text-slate-50 selection:bg-pink-500/30">
       
-      {/* DevNavigation is global and stays on top of everything */}
-      <DevNavigation currentPage={currentPage} setPage={setCurrentPage} />
+      <DevNavigation currentPage={currentPage} setPage={setPage} />
 
       {currentPage === 'home' && (
         <div className="animate-fadeIn">
@@ -91,7 +122,6 @@ export default function App() {
             <SdrExplanation />
             <HowItWorks />
             <Benefits />
-            <FAQ />
             <Contact />
           </main>
         </div>
@@ -99,7 +129,7 @@ export default function App() {
 
       {currentPage === 'delivery-agent' && (
         <div className="animate-fadeIn">
-          <DeliveryNavbar setPage={setCurrentPage} />
+          <DeliveryNavbar setPage={setPage} />
           <main className="bg-[#050505] text-gray-100 font-sans relative">
              <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay fixed"></div>
              <div className="relative z-10">
@@ -115,10 +145,10 @@ export default function App() {
         </div>
       )}
 
-      {currentPage === 'privacy' && <LegalPage type="privacy" setPage={setCurrentPage} />}
-      {currentPage === 'terms' && <LegalPage type="terms" setPage={setCurrentPage} />}
+      {currentPage === 'privacy' && <LegalPage type="privacy" setPage={setPage} />}
+      {currentPage === 'terms' && <LegalPage type="terms" setPage={setPage} />}
 
-      <Footer setPage={setCurrentPage} />
+      <Footer setPage={setPage} />
     </div>
   );
 }
