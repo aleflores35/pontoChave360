@@ -1,72 +1,392 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PontoChave360 - Sistemas de Crescimento para Negócios Locais</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #020617;
-      /* Slate-950 */
-      color: #F8FAFC;
-      /* Slate-50 */
-      overflow-x: hidden;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PontoChave360 - Sistemas de Crescimento para Negócios</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      font-family: 'Montserrat', sans-serif;
-    }
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'shimmer': 'shimmer 1.5s infinite',
+                        'fadeIn': 'fadeIn 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        shimmer: {
+                            '100%': { transform: 'translateX(100%)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: '0', transform: 'translateY(10px)' },
+                            'to': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
-    /* Tech Grid Background */
-    .bg-grid-tech {
-      background-size: 50px 50px;
-      background-image: linear-gradient(to right, rgba(30, 41, 59, 0.5) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(30, 41, 59, 0.5) 1px, transparent 1px);
-    }
+    <style>
+        body {
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        
+        .bg-grid-tech {
+            background-size: 50px 50px;
+            background-image: linear-gradient(to right, rgba(30, 41, 59, 0.5) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(30, 41, 59, 0.5) 1px, transparent 1px);
+        }
 
-    /* Neon Glows */
-    .glow-cyan {
-      box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
-    }
+        .hidden-page { display: none; }
 
-    .text-glow {
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-    }
+        ::-webkit-scrollbar { width: 8px; background: #020617; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-      background: #020617;
-    }
+        .perspective-1000 { perspective: 1000px; }
+        
+        /* Typing indicator animation */
+        .typing-dot {
+            width: 4px;
+            height: 4px;
+            background: #888;
+            border-radius: 50%;
+            display: inline-block;
+            animation: typing 1s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "path": "https://esm.sh/path@^0.12.7",
+    "url": "https://esm.sh/url@^0.11.4",
+    "vite": "https://esm.sh/vite@^7.3.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
+  }
+}
+</script>
+</head>
+<body class="bg-slate-950 text-slate-50 antialiased font-sans">
+    <!-- Required root div placeholder -->
+    <div id="root"></div>
 
-    ::-webkit-scrollbar-track {
-      background: #020617;
-    }
+    <!-- FLOATING NAVIGATION SWITCHER -->
+    <div class="fixed bottom-6 right-6 z-[100] bg-black/80 backdrop-blur-md border border-white/10 p-2 rounded-full shadow-2xl flex flex-col sm:flex-row items-end sm:items-center gap-2">
+        <button onclick="navigateTo('home')" id="nav-home" class="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all bg-cyan-500 text-slate-950 shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+            <i data-lucide="layout" class="w-3.5 h-3.5"></i> Home
+        </button>
+        <button onclick="navigateTo('ai')" id="nav-ai" class="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all text-white hover:bg-white/10">
+            <i data-lucide="bot" class="w-3.5 h-3.5"></i> Estética
+        </button>
+        <button onclick="navigateTo('delivery')" id="nav-delivery" class="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all text-white hover:bg-white/10">
+            <i data-lucide="utensils-crossed" class="w-3.5 h-3.5"></i> Delivery
+        </button>
+    </div>
 
-    ::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 4px;
-    }
+    <!-- PAGE: HOME (INSTITUTIONAL) -->
+    <div id="page-home" class="page-container">
+        <nav class="sticky top-0 z-50 transition-all duration-300 border-b border-transparent py-6 bg-slate-950/80 backdrop-blur-md" id="main-nav">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <div class="flex items-center gap-2 cursor-pointer group" onclick="window.scrollTo(0,0)">
+                    <div class="bg-cyan-500/10 p-2 rounded-lg border border-cyan-500/20 group-hover:border-cyan-500/50 transition-colors">
+                        <i data-lucide="share-2" class="h-6 w-6 text-cyan-400"></i>
+                    </div>
+                    <span class="font-montserrat font-bold text-xl tracking-tight text-white">PontoChave<span class="text-cyan-400">360</span></span>
+                </div>
+                <div class="hidden md:flex items-center space-x-10">
+                    <a href="#methodology" class="text-slate-400 hover:text-white font-medium transition-colors text-sm tracking-wide">O Método</a>
+                    <a href="#segments" class="text-slate-400 hover:text-white font-medium transition-colors text-sm tracking-wide">Para Quem É</a>
+                    <a href="#solutions" class="text-slate-400 hover:text-white font-medium transition-colors text-sm tracking-wide">Soluções</a>
+                    <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" class="bg-white hover:bg-slate-200 text-slate-950 px-6 py-2.5 rounded font-bold transition-all flex items-center gap-2 text-sm shadow-lg">Diagnóstico Gratuito <i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                </div>
+            </div>
+        </nav>
 
-    ::-webkit-scrollbar-thumb:hover {
-      background: #475569;
-    }
-  </style>
+        <section id="hero" class="relative pt-32 pb-24 lg:pt-48 lg:pb-40 overflow-hidden">
+            <div class="absolute inset-0 bg-grid-tech opacity-20 pointer-events-none"></div>
+            <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 border border-slate-700 mb-8">
+                    <div class="flex gap-1"><span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span><span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse delay-75"></span></div>
+                    <span class="text-xs font-bold text-slate-300 uppercase tracking-widest">Sistemas de Crescimento</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] mb-8 font-montserrat max-w-5xl mx-auto">
+                    Negócios não precisam de "mais marketing". <br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Precisam de um Sistema de Aquisição Previsível.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+                    A PontoChave360 estrutura o ecossistema que faz sua empresa ser encontrada, converter leads e atender clientes automaticamente com IA.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                    <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" class="px-8 py-5 bg-white text-slate-950 rounded font-bold text-lg hover:bg-slate-200 shadow-xl flex items-center justify-center gap-3">AGENDAR DIAGNÓSTICO <i data-lucide="arrow-right" class="w-5 h-5"></i></button>
+                    <button onclick="document.getElementById('problem').scrollIntoView({behavior:'smooth'})" class="px-8 py-5 border border-slate-700 text-white rounded font-bold text-lg hover:bg-slate-900 transition-all flex items-center justify-center gap-2">Ver a Diferença <i data-lucide="chevron-down" class="w-5 h-5"></i></button>
+                </div>
+            </div>
+        </section>
 
-<body class="bg-slate-950 text-slate-50 antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
-  <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
+        <section id="problem" class="bg-slate-900 py-24 relative border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 text-center mb-20">
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 font-montserrat">O jeito tradicional de fazer marketing <br /><span class="text-red-500">parou de funcionar.</span></h2>
+                <p class="text-slate-400 text-lg max-w-3xl mx-auto">Durante anos, disseram que bastava "postar todo dia". Mentira. Hoje, o cliente decide em minutos, e posts bonitos não pagam boletos.</p>
+            </div>
+            <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8 lg:gap-16">
+                <div class="bg-slate-950/50 border border-slate-800 rounded-2xl p-8 lg:p-12 opacity-70 hover:opacity-100 transition-opacity">
+                    <h3 class="text-2xl font-bold text-slate-300 font-montserrat mb-8">Agência Comum</h3>
+                    <ul class="space-y-6">
+                        <li class="flex gap-4"><i data-lucide="x" class="text-red-500 flex-shrink-0"></i><p class="text-slate-400">Foco em "Likes" e Seguidores inúteis.</p></li>
+                        <li class="flex gap-4"><i data-lucide="x" class="text-red-500 flex-shrink-0"></i><p class="text-slate-400">Site Institucional Lento e confuso.</p></li>
+                        <li class="flex gap-4"><i data-lucide="x" class="text-red-500 flex-shrink-0"></i><p class="text-slate-400">Atendimento Manual demorado.</p></li>
+                    </ul>
+                </div>
+                <div class="bg-gradient-to-b from-slate-900 to-slate-950 border border-cyan-500/30 rounded-2xl p-8 lg:p-12 relative overflow-hidden shadow-2xl">
+                    <h3 class="text-2xl font-bold text-white font-montserrat mb-8 relative z-10">PontoChave360</h3>
+                    <ul class="space-y-6 relative z-10">
+                        <li class="flex gap-4"><i data-lucide="check" class="text-cyan-400 flex-shrink-0"></i><p class="text-white font-bold">Foco em Lucro e Agendamento Real.</p></li>
+                        <li class="flex gap-4"><i data-lucide="check" class="text-cyan-400 flex-shrink-0"></i><p class="text-white font-bold">Páginas de Alta Conversão psicológica.</p></li>
+                        <li class="flex gap-4"><i data-lucide="check" class="text-cyan-400 flex-shrink-0"></i><p class="text-white font-bold">Automação com IA 24/7 sem erros.</p></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PAGE: AI AGENT (ESTÉTICA) -->
+    <div id="page-ai" class="page-container hidden-page bg-stone-50 text-stone-900">
+        <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm py-4">
+            <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+                <div class="flex items-center gap-2 cursor-pointer group" onclick="navigateTo('home')">
+                    <div class="bg-purple-900 p-2 rounded-lg"><i data-lucide="sparkles" class="h-5 w-5 text-amber-400"></i></div>
+                    <span class="font-serif font-bold text-2xl tracking-tight">pontoChave<span class="text-purple-900">360</span></span>
+                </div>
+                <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" class="bg-stone-900 text-white px-6 py-2.5 rounded-full font-medium shadow-md flex items-center gap-2 text-sm">Agendar Diagnóstico <i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+            </div>
+        </nav>
+
+        <section class="relative pt-24 pb-20 lg:pt-32 lg:pb-32 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+                <div class="flex-1 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-stone-200 mb-8 animate-float">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-purple-900"></i>
+                        <span class="text-xs font-bold text-stone-600 uppercase tracking-wide">Atendimento Inteligente 24h</span>
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-medium text-stone-900 mb-6 font-serif leading-[1.15]">Clínicas perdem fortunas no <span class="bg-clip-text text-transparent bg-gradient-to-r from-stone-800 to-stone-500 font-bold italic">"vácuo"</span> do WhatsApp.</h1>
+                    <p class="text-lg text-stone-600 mb-10 leading-relaxed font-light">Implementamos Agentes de IA que atendem, qualificam e agendam pacientes em segundos. <strong>Pare de perder leads agora.</strong></p>
+                    <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" class="px-8 py-4 bg-stone-900 rounded-full text-white font-medium shadow-xl hover:-translate-y-1 transition-all flex items-center gap-3 mx-auto lg:mx-0">QUERO UMA DEMONSTRAÇÃO <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                </div>
+                <div class="flex-1 w-full max-w-[450px]">
+                    <div class="bg-stone-900 p-2.5 rounded-[3rem] shadow-2xl border-4 border-stone-800">
+                        <div class="bg-white rounded-[2.5rem] overflow-hidden h-[500px] flex flex-col relative">
+                            <div class="bg-stone-100 p-3 px-4 flex items-center gap-3 border-b shadow-sm">
+                                <div class="w-9 h-9 bg-purple-900 rounded-full flex items-center justify-center"><i data-lucide="sparkles" class="text-amber-400 w-5 h-5"></i></div>
+                                <div><h3 class="text-stone-900 font-semibold text-sm">Clínica Estética</h3><p class="text-[10px] text-stone-500">IA • Online 24h</p></div>
+                            </div>
+                            <div class="flex-1 p-4 overflow-y-auto space-y-4 bg-stone-200/50" id="chat-ai-messages"></div>
+                            <div class="p-3 bg-stone-100 flex items-center gap-2">
+                                <div class="flex-1 bg-white h-9 rounded-full px-4 text-sm flex items-center text-stone-400">Escreva sua mensagem...</div>
+                                <div class="w-9 h-9 bg-purple-900 rounded-full flex items-center justify-center text-white"><i data-lucide="send" class="w-4 h-4"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PAGE: DELIVERY AGENT -->
+    <div id="page-delivery" class="page-container hidden-page bg-[#050505] text-white">
+        <nav class="sticky top-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/5 py-4">
+            <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('home')">
+                    <div class="bg-orange-600/20 p-1.5 rounded border border-orange-500/30"><i data-lucide="arrow-left" class="w-4 h-4 text-orange-500"></i></div>
+                    <span class="font-montserrat font-bold text-xl tracking-tight">PontoChave<span class="text-orange-500">360</span></span>
+                </div>
+                <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" class="bg-orange-600 px-5 py-2 rounded-lg font-bold text-sm shadow-lg shadow-orange-600/20">TESTAR AGORA</button>
+            </div>
+        </nav>
+
+        <section class="relative pt-12 pb-24 lg:pt-28 lg:pb-40 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+                <div class="flex-1 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-orange-500/30 bg-orange-500/5 mb-8">
+                        <i data-lucide="zap" class="w-4 h-4 text-orange-400"></i><span class="text-xs font-bold text-orange-200 uppercase tracking-widest">IA para Delivery 24h</span>
+                    </div>
+                    <h1 class="text-5xl md:text-6xl font-extrabold mb-8 font-montserrat leading-[1.1]">A fome não espera. <br/> <span class="text-orange-500">O lucro também não.</span></h1>
+                    <p class="text-xl text-gray-400 mb-10 font-light">O Agente PontoChave atende, vende e envia para a cozinha em segundos. Sem taxas por pedido.</p>
+                    <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" class="px-8 py-5 bg-orange-600 text-white font-bold rounded-xl shadow-2xl hover:bg-orange-500 transition-all flex items-center justify-center gap-3 mx-auto lg:mx-0">QUERO VENDER MAIS <i data-lucide="arrow-right" class="w-5 h-5"></i></button>
+                </div>
+                <div class="flex-1 w-full max-w-[420px]">
+                    <div class="bg-[#121212] p-3 rounded-[3rem] shadow-2xl border border-white/10">
+                        <div class="bg-white rounded-[2.5rem] overflow-hidden h-[500px] flex flex-col relative">
+                            <div class="bg-[#075E54] p-3 px-4 flex items-center gap-3 text-white">
+                                <div class="w-9 h-9 bg-orange-500 rounded-full flex items-center justify-center border border-white"><i data-lucide="shopping-bag" class="w-4 h-4"></i></div>
+                                <div><h3 class="font-semibold text-sm">PontoChave Delivery</h3><p class="text-[10px] text-gray-200">Online 24h</p></div>
+                            </div>
+                            <div class="flex-1 p-4 overflow-y-auto space-y-3 bg-stone-200/60" id="chat-food-messages"></div>
+                            <div class="p-2 bg-[#F0F2F5]"><div class="bg-white h-9 rounded-full px-4 flex items-center text-gray-400 text-sm">Digite seu pedido...</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- GLOBAL FOOTER & CONTACT -->
+    <section id="contact" class="py-24 bg-slate-950 border-t border-slate-900">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-6 font-montserrat leading-tight">Pronto para <br/> <span class="text-cyan-500">vender automaticamente?</span></h2>
+            <p class="text-slate-400 text-lg mb-12">Agende uma conversa estratégica e descubra como podemos escalar seus resultados.</p>
+            <button class="px-10 py-6 bg-white text-slate-950 font-bold text-xl rounded shadow-2xl hover:scale-105 transition-all flex items-center justify-center gap-3 mx-auto w-full md:w-auto">AGENDAR DIAGNÓSTICO GRATUITO <i data-lucide="arrow-right"></i></button>
+        </div>
+    </section>
+
+    <footer class="bg-[#020617] text-slate-400 py-16 border-t border-slate-900 text-sm">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-4 gap-12 mb-12">
+            <div>
+                <div class="flex items-center gap-2 mb-6 text-white font-bold text-xl"><i data-lucide="share-2" class="text-cyan-500"></i> PontoChave360</div>
+                <p class="font-light leading-relaxed">Especialistas em desenvolvimento de sistemas de crescimento e agentes de IA para negócios locais.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6 uppercase tracking-widest text-xs border-l-2 border-cyan-500 pl-3">Soluções</h4>
+                <ul class="space-y-3">
+                    <li><button onclick="navigateTo('home')" class="hover:text-cyan-400">Sistemas de Vendas</button></li>
+                    <li><button onclick="navigateTo('ai')" class="hover:text-cyan-400">Agentes para Clínicas</button></li>
+                    <li><button onclick="navigateTo('delivery')" class="hover:text-cyan-400">IA para Delivery</button></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6 uppercase tracking-widest text-xs border-l-2 border-purple-500 pl-3">Legal</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="hover:text-white">Privacidade</a></li>
+                    <li><a href="#" class="hover:text-white">Termos de Uso</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6 uppercase tracking-widest text-xs border-l-2 border-amber-500 pl-3">Contato</h4>
+                <p>contato@pontochave360.com.br</p>
+                <p class="mt-4">São Paulo - Brasil</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 pt-8 border-t border-slate-900 text-center text-xs text-slate-600">
+            <p>&copy; 2024 PontoChave360. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // NAVIGATION LOGIC
+        function navigateTo(id) {
+            document.querySelectorAll('.page-container').forEach(p => p.classList.add('hidden-page'));
+            const targetPage = document.getElementById('page-' + id);
+            if (targetPage) targetPage.classList.remove('hidden-page');
+            
+            // Update Body Theme
+            document.body.className = '';
+            if (id === 'home') document.body.className = 'bg-slate-950 text-slate-50 antialiased font-sans';
+            if (id === 'ai') document.body.className = 'bg-stone-50 text-stone-900 antialiased font-sans';
+            if (id === 'delivery') document.body.className = 'bg-[#050505] text-white antialiased font-sans';
+
+            // Update Nav Buttons Styles
+            ['home', 'ai', 'delivery'].forEach(b => {
+                const el = document.getElementById('nav-' + b);
+                if (el) el.className = 'flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all text-white hover:bg-white/10';
+            });
+
+            const activeBtn = document.getElementById('nav-' + id);
+            if (activeBtn) {
+                if(id === 'home') activeBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all bg-cyan-500 text-slate-950 shadow-[0_0_15px_rgba(6,182,212,0.5)]';
+                if(id === 'ai') activeBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.5)]';
+                if(id === 'delivery') activeBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all bg-orange-600 text-white shadow-[0_0_15px_rgba(234,88,12,0.5)]';
+            }
+
+            window.scrollTo(0,0);
+        }
+
+        // CHAT SIMULATION LOGIC
+        const aiMessages = [
+            { t: "Olá! Gostaria de saber o valor do Botox.", s: 'u' },
+            { t: "Olá! Que bom te ver ✨. O valor depende da avaliação, mas trabalhamos com Botox Allergan original.", s: 'b' },
+            { t: "Temos horários para avaliação gratuita esta semana. Quer ver a agenda?", s: 'b' },
+            { t: "Sim, por favor. Pode ser na quinta?", s: 'u' },
+            { t: "Tenho vaga às 16:30 com a Dra. Ana. Confirmamos?", s: 'b' },
+            { t: "Confirmado!", s: 'u' },
+            { t: "Agendado! 📅 Quinta-feira, 16:30. Te enviei os detalhes por e-mail.", s: 'b' }
+        ];
+
+        const foodMessages = [
+            { t: "Boa noite! Quero fazer um pedido.", s: 'u' },
+            { t: "Boa noite! 🍕 Bem-vindo à Pizzaria PontoChave. Segue nosso cardápio digital no botão abaixo:", s: 'b' },
+            { t: "Vou querer uma meia Calabresa, meia Portuguesa. Tamanho G.", s: 'u' },
+            { t: "Ótima escolha! 😋 Gosta de borda recheada? Temos Catupiry e Cheddar.", s: 'b' },
+            { t: "Catupiry, por favor.", s: 'u' },
+            { t: "Perfeito! Seu pedido de R$ 82,00 já foi para a cozinha e logo sai para entrega. 🛵", s: 'b' }
+        ];
+
+        async function startChat(containerId, messages) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            while(true) {
+                container.innerHTML = '';
+                for(let m of messages) {
+                    // Typing indicator for bot
+                    if (m.s === 'b') {
+                        const typing = document.createElement('div');
+                        typing.className = 'flex justify-start';
+                        typing.innerHTML = '<div class="bg-white p-2 px-4 rounded-lg rounded-tl-none shadow-sm flex gap-1"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+                        container.appendChild(typing);
+                        container.scrollTop = container.scrollHeight;
+                        await new Promise(r => setTimeout(r, 1000));
+                        container.removeChild(typing);
+                    }
+
+                    const bubble = document.createElement('div');
+                    bubble.className = `flex ${m.s === 'u' ? 'justify-end' : 'justify-start'} animate-fadeIn`;
+                    const inner = document.createElement('div');
+                    const color = m.s === 'u' ? 'bg-[#DCF8C6]' : 'bg-white';
+                    inner.className = `max-w-[85%] p-2 px-3 rounded-lg text-sm shadow-sm text-stone-800 ${color} ${m.s === 'u' ? 'rounded-tr-none' : 'rounded-tl-none'}`;
+                    inner.innerText = m.t;
+                    bubble.appendChild(inner);
+                    container.appendChild(bubble);
+                    container.scrollTop = container.scrollHeight;
+                    await new Promise(r => setTimeout(r, 2000));
+                }
+                await new Promise(r => setTimeout(r, 4000));
+            }
+        }
+
+        // INITIALIZE
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            startChat('chat-ai-messages', aiMessages);
+            startChat('chat-food-messages', foodMessages);
+        });
+    </script>
 </body>
-
 </html>
