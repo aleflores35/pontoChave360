@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Share2, Instagram, Linkedin, Facebook, Mail, MapPin } from 'lucide-react';
 
@@ -7,6 +8,11 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ setPage }) => {
   const currentYear = new Date().getFullYear();
+
+  const handleLegalClick = (page: string) => {
+    setPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <footer className="bg-[#020617] text-slate-400 py-16 border-t border-slate-900 font-sans relative z-20">
@@ -44,7 +50,7 @@ const Footer: React.FC<FooterProps> = ({ setPage }) => {
             <h4 className="text-white font-bold mb-6 text-sm uppercase tracking-widest border-l-2 border-cyan-500 pl-3">Soluções</h4>
             <ul className="space-y-3 text-sm font-light">
               <li><button onClick={() => setPage('home')} className="hover:text-cyan-400 transition-colors flex items-center gap-2 text-left">Gestão de Tráfego</button></li>
-              <li><button onClick={() => setPage('ai-agent')} className="hover:text-cyan-400 transition-colors flex items-center gap-2 text-left">Agentes de IA</button></li>
+              <li><button onClick={() => setPage('ai-generic')} className="hover:text-cyan-400 transition-colors flex items-center gap-2 text-left">Agentes de IA</button></li>
               <li><button onClick={() => setPage('delivery-agent')} className="hover:text-cyan-400 transition-colors flex items-center gap-2 text-left">Delivery AI</button></li>
               <li><button onClick={() => setPage('home')} className="hover:text-cyan-400 transition-colors flex items-center gap-2 text-left">Funis de Venda</button></li>
             </ul>
@@ -52,12 +58,12 @@ const Footer: React.FC<FooterProps> = ({ setPage }) => {
 
           {/* Legal & Institucional */}
           <div>
-            <h4 className="text-white font-bold mb-6 text-sm uppercase tracking-widest border-l-2 border-purple-500 pl-3">Legal</h4>
+            <h4 className="text-white font-bold mb-6 text-sm uppercase tracking-widest border-l-2 border-purple-500 pl-3">Políticas</h4>
             <ul className="space-y-3 text-sm font-light">
-              <li><button onClick={() => setPage('privacy')} className="hover:text-white transition-colors text-left">Política de Privacidade</button></li>
-              <li><button onClick={() => setPage('terms')} className="hover:text-white transition-colors text-left">Termos de Uso</button></li>
-              <li><button onClick={() => setPage('privacy')} className="hover:text-white transition-colors text-left">Políticas de Cookies</button></li>
-              <li><button onClick={() => { setPage('home'); setTimeout(() => document.getElementById('contact')?.scrollIntoView(), 100); }} className="hover:text-white transition-colors text-left">Fale Conosco</button></li>
+              <li><button onClick={() => handleLegalClick('privacy')} className="hover:text-white transition-colors text-left">Política de Privacidade</button></li>
+              <li><button onClick={() => handleLegalClick('terms')} className="hover:text-white transition-colors text-left">Termos de Uso</button></li>
+              <li><button onClick={() => handleLegalClick('privacy')} className="hover:text-white transition-colors text-left">Aviso Legal</button></li>
+              <li><button onClick={() => { setPage('home'); setTimeout(() => document.getElementById('contact')?.scrollIntoView(), 100); }} className="hover:text-white transition-colors text-left">Suporte ao Cliente</button></li>
             </ul>
           </div>
 
@@ -77,7 +83,7 @@ const Footer: React.FC<FooterProps> = ({ setPage }) => {
                  </span>
               </li>
               <li className="text-xs text-slate-600 mt-4">
-                CNPJ: 00.000.000/0001-00
+                PONTOCHAVE 360 SERVIÇOS DIGITAIS LTDA
               </li>
             </ul>
           </div>
@@ -86,19 +92,22 @@ const Footer: React.FC<FooterProps> = ({ setPage }) => {
         {/* Bottom Section: Disclaimer & Copyright */}
         <div className="border-t border-slate-900 pt-8 mt-8">
             
-            {/* Meta / Facebook Disclaimer */}
-            <div className="max-w-4xl mx-auto text-center mb-8">
-                <p className="text-[10px] leading-relaxed text-slate-600 uppercase tracking-wide">
-                    Este site não faz parte do site do Facebook ou da Facebook Inc. Além disso, este site NÃO é endossado pelo Facebook de nenhuma maneira. FACEBOOK é uma marca comercial da FACEBOOK, Inc.
+            {/* Meta / Facebook Disclaimer - Crucial para Compliance Ads */}
+            <div className="max-w-4xl mx-auto text-center mb-10">
+                <p className="text-[10px] leading-relaxed text-slate-600 uppercase tracking-widest mb-4">
+                  AVISO LEGAL: Este site não faz parte do Facebook ou da Meta Platforms, Inc. Além disso, este site NÃO é endossado pelo Facebook de nenhuma maneira. FACEBOOK é uma marca comercial da Meta Platforms, Inc.
+                </p>
+                <p className="text-[10px] leading-relaxed text-slate-600 font-light">
+                  Nós não acreditamos em programas de "ficar rico rápido". Acreditamos em trabalho duro, entrega de valor e construção de uma carreira real e profissional. Os resultados mencionados acima são nossos resultados pessoais e de alunos. Por favor, entenda que meus resultados não são típicos, não estou insinuando que você os duplicará. Suas conquistas dependerão do seu esforço e dedicação.
                 </p>
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-center text-xs text-slate-600 gap-4">
                 <p>&copy; {currentYear} PontoChave360. Todos os direitos reservados.</p>
                 <div className="flex gap-4">
-                    <button onClick={() => setPage('privacy')} className="hover:text-white cursor-pointer transition-colors">Privacidade</button>
+                    <button onClick={() => handleLegalClick('privacy')} className="hover:text-white cursor-pointer transition-colors">Privacidade</button>
                     <span>•</span>
-                    <button onClick={() => setPage('terms')} className="hover:text-white cursor-pointer transition-colors">Termos</button>
+                    <button onClick={() => handleLegalClick('terms')} className="hover:text-white cursor-pointer transition-colors">Termos</button>
                 </div>
             </div>
         </div>

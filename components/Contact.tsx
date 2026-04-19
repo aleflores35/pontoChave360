@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { ArrowRight, Lock } from 'lucide-react';
+import { ArrowRight, Lock, ShieldCheck } from 'lucide-react';
 
 const Contact: React.FC = () => {
   return (
@@ -19,12 +20,21 @@ const Contact: React.FC = () => {
             O primeiro passo é uma conversa estratégica para entender seu cenário. Sem compromisso, apenas clareza sobre o próximo nível.
         </p>
         
-        <button className="px-10 py-6 bg-white hover:bg-slate-200 text-slate-950 font-bold text-xl rounded shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_50px_rgba(255,255,255,0.3)] transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3 mx-auto w-full md:w-auto">
-            SOLICITAR DIAGNÓSTICO GRATUITO
-            <ArrowRight size={24} />
-        </button>
+        <div className="max-w-md mx-auto">
+          <button className="px-10 py-6 bg-white hover:bg-slate-200 text-slate-950 font-bold text-xl rounded shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_50px_rgba(255,255,255,0.3)] transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3 mx-auto w-full">
+              SOLICITAR DIAGNÓSTICO
+              <ArrowRight size={24} />
+          </button>
+          
+          <div className="mt-6 flex items-center justify-center gap-2 text-slate-600">
+            <ShieldCheck size={14} className="text-cyan-500" />
+            <p className="text-[10px] uppercase tracking-widest font-bold">
+              Seus dados estão protegidos pela nossa <span className="text-slate-400 underline cursor-pointer">Política de Privacidade</span>.
+            </p>
+          </div>
+        </div>
         
-        <p className="mt-8 text-sm text-slate-600">
+        <p className="mt-8 text-[10px] text-slate-700 uppercase tracking-[0.2em] font-black">
             *Vagas limitadas para consultoria estratégica mensal.
         </p>
 
